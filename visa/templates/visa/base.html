@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eVisa System</title>
+    <style>
+        body { margin: 0; font-family: Inter, Arial, sans-serif; background: #eef2f8; color: #1f2937; }
+        .page { max-width: 960px; margin: 0 auto; padding: 32px; }
+        .card { background: white; border-radius: 16px; box-shadow: 0 18px 45px rgba(15,23,42,0.08); padding: 28px; }
+        h1, h2 { margin-top: 0; }
+        form { display: grid; gap: 12px; }
+        input[type=text] { width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 16px; }
+        button { background: #2563eb; border: none; color: white; padding: 14px 18px; font-size: 16px; border-radius: 12px; cursor: pointer; }
+        button:hover { background: #1d4ed8; }
+        .notice { padding: 16px; border-radius: 12px; background: #f8fafc; border: 1px solid #cbd5e1; }
+        .fields { display: grid; gap: 14px; margin-top: 20px; }
+        .field dt { font-weight: 700; }
+        .field dd { margin: 0 0 0.5rem 0; }
+        .photo { max-width: 250px; border-radius: 14px; box-shadow: 0 12px 36px rgba(15,23,42,0.12); }
+        .footer { margin-top: 24px; font-size: 0.95rem; color: #475569; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="card">
+            <header>
+                <h1>eVisa Search</h1>
+                <p>Enter a visa number to verify the applicant's visa status and identity details.</p>
+            </header>
+            {% block content %}{% endblock %}
+            <div class="footer">
+                Admin panel: <a href="/admin/">/admin/</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

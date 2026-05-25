@@ -1,0 +1,51 @@
+{% extends "visa/base.html" %}
+
+{% block content %}
+<form method="get" action="{% url 'visa:visa_search' %}">
+    <label for="visa_number">Visa Number</label>
+    <input id="visa_number" name="visa_number" type="text" placeholder="Enter visa number" value="{{ search_query }}" required>
+    <button type="submit">Lookup Visa</button>
+</form>
+
+{% if search_query %}
+    {% if record %}
+        <section class="fields">
+            <h2>Visa details for {{ record.visa_number }}</h2>
+            {% if record.photo %}
+                <img class="photo" src="{{ record.photo.url }}" alt="Visa holder photo">
+            {% endif %}
+            <div class="field">
+                <dt>Surname</dt><dd>{{ record.surname }}</dd>
+            </div>
+            <div class="field">
+                <dt>First name</dt><dd>{{ record.first_name }}</dd>
+            </div>
+            <div class="field">
+                <dt>Date of birth</dt><dd>{{ record.date_of_birth }}</dd>
+            </div>
+            <div class="field">
+                <dt>Citizenship</dt><dd>{{ record.citizenship }}</dd>
+            </div>
+            <div class="field">
+                <dt>Passport number</dt><dd>{{ record.passport_number }}</dd>
+            </div>
+            <div class="field">
+                <dt>Visa status</dt><dd>{{ record.visa_status }}</dd>
+            </div>
+            <div class="field">
+                <dt>Visa validity</dt><dd>{{ record.visa_validity }}</dd>
+            </div>
+            <div class="field">
+                <dt>Visa type</dt><dd>{{ record.visa_type }}</dd>
+            </div>
+            <div class="field">
+                <dt>Visit purpose</dt><dd>{{ record.visit_purpose }}</dd>
+            </div>
+        </section>
+    {% else %}
+        <div class="notice">
+            No visa record found for <strong>{{ search_query }}</strong>. Please verify the visa number and try again.
+        </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,457 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise eVisa Verification System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #0f172a;
+            min-height: 100vh;
+            padding-bottom: 4rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: #ffffff;
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(153, 27, 27, 0.15);
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-system {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .search-section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .search-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-section p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar-wrapper {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto 1.5rem auto;
+            gap: 0.75rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.25s ease;
+            background-color: #f8fafc;
+        }
+
+        .search-input:focus {
+            border-color: #dc2626;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+        }
+
+        .btn-search:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+        }
+
+        .btn {
+            padding: 0.75rem 1.75rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-another {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-another:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(2, 132, 199, 0.35);
+        }
+
+        .result-container {
+            min-height: 200px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .visa-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            padding: 2.5rem;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .visa-card-actions {
+            display: flex;
+            justify-content: flex-end;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .visa-document-layout {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .doc-header-title h2 {
+            font-size: 1.6rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #991b1b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .doc-header-title p {
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .identity-profile-panel {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .id-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .id-details h3 {
+            font-size: 1.4rem;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .id-details p {
+            font-size: 0.95rem;
+            color: #475569;
+        }
+
+        .id-details .visa-num-tag {
+            display: inline-block;
+            background: #fee2e2;
+            color: #991b1b;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            border: 1px solid #fca5a5;
+            width: max-content;
+        }
+
+        .doc-photo-frame {
+            width: 110px;
+            height: 135px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+        }
+
+        .doc-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-grid-title {
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid #dc2626;
+            padding-left: 8px;
+        }
+
+        .info-table-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background-color: #cbd5e1;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .grid-cell {
+            background-color: #ffffff;
+            padding: 0.75rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .grid-cell .cell-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .grid-cell .cell-value {
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: #0f172a;
+        }
+
+        .status-valid {
+            color: #16a34a !important;
+            font-weight: 700 !important;
+        }
+
+        .status-invalid {
+            color: #dc2626 !important;
+            font-weight: 700 !important;
+        }
+
+        .doc-footer {
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .search-bar-wrapper { flex-direction: column; }
+            .btn-search { padding: 0.9rem; }
+            .info-table-grid { grid-template-columns: 1fr; }
+            .identity-profile-panel { flex-direction: column-reverse; align-items: flex-start; gap: 1rem; }
+            .visa-card { padding: 1.5rem; }
+            .visa-card-actions { justify-content: center; width: 100%; }
+            .btn { flex: 1; justify-content: center; }
+            .doc-footer { flex-direction: column; gap: 6px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Government eVisa Hub</h1>
+        <div class="badge-system">Secure Admin Node</div>
+    </header>
+
+    <div class="container">
+        
+        <section class="search-section">
+            <h2>Verify Visa Credentials</h2>
+            <p>Enter the precise document alpha-numeric Visa Number to parse secure records.</p>
+            <form method="get" action="{% url 'visa:visa_search' %}">
+                <div class="search-bar-wrapper">
+                    <input type="text" name="visa_number" class="search-input" placeholder="e.g., VISA-2026-991A" value="{{ request.GET.visa_number|default:'' }}" required>
+                    <button type="submit" class="btn-search">Search Record</button>
+                </div>
+            </form>
+        </section>
+
+        <div class="result-container">
+            
+            {% if request.GET.visa_number %}
+                {% if record %}
+                    <article class="visa-card">
+                        
+                        <div class="visa-card-actions">
+                            <a href="{% url 'visa:visa_search' %}" class="btn btn-another">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                Another Search
+                            </a>
+                        </div>
+
+                        <div class="visa-document-layout">
+                            
+                            <div class="doc-header">
+                                <div class="doc-header-title">
+                                    <h2>ELECTRONIC VISA RECORD</h2>
+                                    <p>Official Verification Document • Immigration Bureau State Entry</p>
+                                </div>
+                            </div>
+
+                            <div class="identity-profile-panel">
+                                <div class="id-details">
+                                    <p style="text-transform: uppercase; font-size: 0.75rem; font-weight:700; color:#64748b; letter-spacing:0.5px;">Primary Holder</p>
+                                    <h3>{{ record.first_name }} {{ record.surname }}</h3>
+                                    <p>Passport Association Identifier: <strong>{{ record.passport_number }}</strong></p>
+                                    <span class="visa-num-tag">{{ record.visa_number }}</span>
+                                </div>
+                                {% if record.photo %}
+                                <div class="doc-photo-frame">
+                                    <img src="{{ record.photo.url }}" alt="Visa Holder Passport Photo">
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <h4 class="info-grid-title">Visa Specifications</h4>
+                            <div class="info-table-grid">
+                                <div class="grid-cell"><span class="cell-label">Surname</span><span class="cell-value">{{ record.surname }}</span></div>
+                                <div class="grid-cell"><span class="cell-label">First Name</span><span class="cell-value">{{ record.first_name }}</span></div>
+                                <div class="grid-cell"><span class="cell-label">Date of Birth</span><span class="cell-value">{{ record.date_of_birth }}</span></div>
+                                <div class="grid-cell"><span class="cell-label">Citizenship</span><span class="cell-value">{{ record.citizenship }}</span></div>
+                                <div class="grid-cell"><span class="cell-label">Passport Number</span><span class="cell-value">{{ record.passport_number }}</span></div>
+                                <div class="grid-cell">
+                                    <span class="cell-label">Visa Status</span>
+                                    <span class="cell-value {% if record.visa_status == 'Valid' %}status-valid{% else %}status-invalid{% endif %}">{{ record.visa_status }}</span>
+                                </div>
+                                <div class="grid-cell"><span class="cell-label">Visa Validity</span><span class="cell-value">{{ record.visa_validity }}</span></div>
+                                <div class="grid-cell"><span class="cell-label">Visa Type</span><span class="cell-value">{{ record.visa_type }}</span></div>
+                                <div class="grid-cell"><span class="cell-label">Visit Purpose</span><span class="cell-value">{{ record.visit_purpose }}</span></div>
+                            </div>
+
+                            <div class="doc-footer">
+                                <span>Automated Generation via Govt-eVisa</span>
+                                <span>Verification Date Log: {% now "Y-m-d H:i" %}</span>
+                            </div>
+                        </div>
+                    </article>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <h3>No Visa Found matching the requested credential parameter.</h3>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <h3>Awaiting System Query Input</h3>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
